@@ -1,0 +1,80 @@
+Nome;Cor (hex);Nome (BR);Abreviacao (BR);Codigo (BR)
+anidrita;#dd1dff;ANIDRITA;AND;82
+ardosia;#00dd00;ARDOSIA;ARS;77
+areia;#ffff3f;AREIA;ARE;48
+arenito;#ffff3f;ARENITO;ARN;49
+arenito argiloso;#7eff00;ARENITO ARGILOSO;ARL;25
+arenito carbonat.;#3fbeff;ARENITO CARBONATICO;ARC;26
+arenito conglome.;#ffbe1d;ARENITO CONGLOMERATICO;ARO;27
+arenito fosfatic.;#ffff3f;ARENITO FOSFATICO;ARF;28
+arenito tobaceo;#dddddd;ARENITO TOBACEO;ART;29
+argila;#7eff00;ARGILA;ARG;55
+argilito;#7eff00;ARGILITO;AGT;56
+argilito arenoso;#ffff3f;ARGILITO ARENOSO;AGN;20
+argilito carbona.;#2f0eff;ARGILITO CARBONATICO;AGL;21
+argilito carbono.;#dddddd;ARGILITO CARBONOSO;AGC;22
+argilito siltico;#af1d4e;ARGILITO SILTICO;AGS;23
+argilito tobaceo;#dddddd;ARGILITO TOBACEO;AGB;24
+basalto;#ff00ff;BASALTO;BAS;66
+biolitito;#afecec;BIOLITITO;BLT;16
+brecha;#ffdd1d;BRECHA;BRC;40
+brecha vulcanica;#da62bc;BRECHA VULCANICA;BRV;41
+calcarenito;#007eec;CALCARENITO;CRE;8
+calcario;#beffff;CALCARIO;CAL;1
+calcario cristal.;#00ecec;CALCARIO CRISTALINO;CLC;2
+calcilutito;#4effff;CALCILUTITO;CLU;6
+calcirudito;#007eec;CALCIRUDITO;CRU;10
+calcissiltito;#3fbeff;CALCISSILTITO;CSI;7
+carnalita;#af5ddd;CARNALITA;CRN;87
+carvao;#dddddd;CARVAO;CRV;92
+chert;#dddddd;CHERT;CHT;19
+cimento;#4effff;CIMENTO;CIM;11
+conglomerado;#ffbe1d;CONGLOMERADO;CGL;42
+coquina;#afecec;COQUINA;COQ;4
+diabasio;#ff00ff;DIABASIO;DIA;65
+diamictito;#0eec5d;DIAMICTITO;DMT;44
+dolomita;#00becd;DOLOMITO;DOL;30
+fangolita;#dddddd;FANGOLITA;FNG;95
+filito;#3fa000;FILITO;FLT;72
+folhelho;#3fff00;FOLHELHO;FLH;57
+folhelho siltico.;#3fff00;FOLHELHO SILTICO;FLS;52
+fosforita;#ffbe1d;FOSFORITA;PHO;18
+gipsita;#dd1dff;GIPSITA;GIP;83
+gnaisse;#ff0000;GNAISSE;GNA;71
+grainstone;#007eec;GRAINSTONE;GRS;15
+granito;#ff0000;GRANITO;GRN;67
+halita;#6dafcd;HALITA;HAL;85
+igneas;#ff0000;IGNEA NAO IDENTIFICADA;INI;64
+ignimbrito;#b66d23;IGNIMBRITO;IGB;63
+limoarcilita;#dddddd;LIMOARCILITA;LMA;53
+linhito;#dddddd;LINHITO;LNT;90
+marga;#2f0eff;MARGA;MRG;58
+marmore calcitic.;#ffbeff;MARMORE;MRM;3
+marmore dolomiti.;#ff00ff;MARMORE DOLOMITICO;MRD;5
+meta_arenito;#ff3f3f;META-ARENITO;MAR;75
+meta_siltito;#dd3f3f;METASSILTITO;MSI;76
+metamorficas;#ff0000;METAMORFICA NAO IDENTIFICADA;MNI;70
+metassedimento;#ff0000;METASSEDIMENTO;MSD;79
+mudstone;#4effff;MUDSTONE;MDS;12
+packstone;#18b1f1;PACKSTONE;PKS;14
+quartzito;#ff3f3f;QUARTZITO;QZT;74
+riolito;#e98918;RIOLITO;RLT;68
+sal nao identifi.;#8e1ddd;SAL NAO IDENTIFICADO;SNI;84
+siderita;#e98918;SIDERITA;SID;9
+silexito;#beffff;SILEXITO;SLX;94
+siltito;#af1d4e;SILTITO;SLT;54
+silvinita;#cda0dd;SILVINITA;SLV;86
+talcoestivencita;#ffff3f;TALCOESTIVENCITA;TES;91
+taquidrita;#6d1ddd;TAQUIDRITA;TQD;81
+tilito;#2fec5d;TILITO;TIL;46
+toba;#dddddd;TOBA;TOB;59
+toba arenosa;#ffff3f;TOBA ARENOSA;TON;43
+toba argilosa;#7eff00;TOBA ARGILOSA;TOL;45
+toba siltica;#af1d4e;TOBA SILTICA;TOS;47
+tufo vulcanico;#ff5dbe;TUFO VULCANICO;TUF;61
+ultrabasica;#00a000;ULTRABASICA;ULB;78
+vulcanoclastica;#ffbe1d;VULCANICA NAO IDENTIFICADA;VNI;34
+wackestone;#33d8f9;WACKESTONE;WKS;13
+xisto;#ff5d5d;XISTO;XST;73
+hachura vertical;#afecec;;;
+oleo;#000000;;;

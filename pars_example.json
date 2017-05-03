@@ -1,0 +1,23 @@
+{
+    "csv": {
+        "codecolumn": 1,
+        "colorcolumn": 2,
+        "colorformat": "html",
+        "delimiter": ";",
+        "decimal": ",",
+        "nullstr": ""
+    },
+    "color": {
+        "distancemetric": "human",
+        "maxdistance": 0.02,
+        "nullcolor": "#000000"
+    },
+    "log": {
+        "topdepth": null,
+        "bottomdepth": null,
+        "lithologymnem": "LITO",
+        "nullcode": -1,
+        "interpolate": false,
+        "extrapolate": false
+    }
+}
