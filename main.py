@@ -57,9 +57,6 @@ def compresstotopbottom(image_1d, gapcolor=Utils._GAPCOLOR):
 
 from scipy.interpolate import interp1d
 def interpolate(new_x, y, tops, bottoms, nullvalue=Utils._GAPCOLOR, fillgaps=False, extrapolate=False):
-    print new_x
-    print tops
-    print bottoms
     if fillgaps:
         y_ = np.repeat(y, 2)
         x_ = np.vstack((tops, bottoms)).T.flatten()
