@@ -1,4 +1,5 @@
 import numpy as np
+from scipy.interpolate import interp1d
 
 def rgb2int(r, g, b):
 	return r*256**2 + g*256 + b
@@ -75,10 +76,10 @@ def imageint2rgb(image_int):
     return image_rgb
 
 _MAXDISTANCE = 0.02
-_GAPCOLOR = 0
+_NULL_COLOR = 0
 _DISTMETRIC = 'human'
 
-def flattenimage(image, colorlist, distmetric=_DISTMETRIC, maxdistance=_MAXDISTANCE, gapcolor=_GAPCOLOR):
+def flattenimage(image, colorlist, distmetric=_DISTMETRIC, maxdistance=_MAXDISTANCE, gapcolor=_NULL_COLOR):
     distfun = dictcolordistance[distmetric]
     
     nrows = image.shape[0]
@@ -117,7 +118,7 @@ def fattenimage(image_1d, ncols):
     image = np.repeat(image, ncols, axis=1)
     return image
 
-def fillgaps(image_1d, gapcolor=_GAPCOLOR):
+def fillgaps(image_1d, gapcolor=_NULL_COLOR):
     nrows = image_1d.shape[0]
     
     colorchange = np.empty(nrows, dtype=bool)
@@ -145,3 +146,49 @@ def fillgaps(image_1d, gapcolor=_GAPCOLOR):
             newimage[beg+1:end] = image_1d[beg]
     
     return newimage
+
+def index2depth(index, n, top, bottom):
+    depth = top + index/(n - 1.0)*(bottom - top)
+    return depth
+
+def depth2index(depth, n, top, bottom):
+    index = (depth - top)/(bottom - top)*(n - 1.0)
+    return index
+
+def compress(image_1d, gapcolor=_NULL_COLOR):
+    nrows = image_1d.shape[0]
+    
+    colorchange = np.empty(nrows, dtype=bool)
+    colorchange[:-1] = (image_1d[1:] - image_1d[:-1]).astype(bool)
+    colorchange[-1] = False
+    
+    colorchangeidxs = np.arange(nrows)[colorchange]
+    
+    bottoms = np.append(colorchangeidxs, nrows-1)
+    tops = np.append(0, colorchangeidxs+1)
+    colors = image_1d[bottoms]
+    
+    isgap = colors == gapcolor
+    
+    bottoms = bottoms[~isgap]
+    tops = tops[~isgap]
+    colors = colors[~isgap]
+    
+    return colors, tops, bottoms
+
+def interpolate(new_x, y, tops, bottoms, nullvalue=_NULL_COLOR, fillgaps=False, extrapolate=False):
+    if fillgaps:
+        y_ = np.repeat(y, 2)
+        x_ = np.vstack((tops, bottoms)).T.flatten()
+    else:
+        epsilon = 1.0E-6
+        y_ = np.vstack((np.zeros(len(y))+nullvalue, y, y, np.zeros(len(y))+nullvalue)).T.flatten()
+        x_ = np.vstack((tops-epsilon, tops, bottoms, bottoms+epsilon)).T.flatten()
+    
+    if extrapolate:
+        fill_value = 'extrapolate'
+    else:
+        fill_value = nullvalue
+    
+    f = interp1d(x_, y_, kind='nearest', bounds_error=False, fill_value=fill_value)
+    return f(new_x)
