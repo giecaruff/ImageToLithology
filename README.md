@@ -6,7 +6,7 @@ The repository has 3 mains programs:
 
 1. `imagetolayers.py`: converts an image file (*.png, for example), to a CSV file with the layers found in the image.
 
-2. `layerstoimage.py`: do the inverse of the previous program. It`s used for quality control purposes.
+2. `layerstoimage.py`: do the inverse of the previous program. It's used for quality control purposes.
 
 3. `layerstolas.py`: add the layers from a CSV file as a new curve in a LAS file.
 
