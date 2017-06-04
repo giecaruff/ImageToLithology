@@ -20,8 +20,8 @@ All programs provide a command line interface that is described below.
 
 - `--imagefilename` (or `-i`): the file name of the image to be converted.
 - `--csvfilename` (or `-c`): the file name of a CSV file containing the colors and codes of lithologies.
-- `--csvcodecolumn` (optional): the column of the lithologies codes in the CSV file described above. Column counting starts from 1. If this argument is omitted, the first column will be used.
-- `--csvcolorcolumn` (optional): the column of the lithologies colors in the CSV file described above. Column counting starts from 1. If this argument is omitted, the second column will be used.
+- `--csvcodecolumn` (optional): the column number of the lithologies codes in the CSV file described above. Column counting starts from 1. If this argument is omitted, the first column will be used.
+- `--csvcolorcolumn` (optional): the column number of the lithologies colors in the CSV file described above. Column counting starts from 1. If this argument is omitted, the second column will be used.
 - `--csvskiplines` (optional): number of lines that will be skipped when reading the CSV file (i.e. the header, or columnt titles). If this argument is omitted, a single line will be skipped.
 - `--csvcolumnseparator` (optional): the column separator used in the CSV file. If this argument is omitted, comma (`,`) will be used as column separator.
 - `--csvcolorformat` (optional): the color format used in the CSV file. For now, can be `html`, `rgb` or `int`. You can find more on this further in this document. If this argument is omitted, html formatting will be assumed.
@@ -36,3 +36,46 @@ All programs provide a command line interface that is described below.
 - `--outputfilename`, `-o`: the name of the output CSV file.
 
 ## `layerstoimage.py` command line arguments
+
+- `--layersfilename` (or `-i`): the file name of the CSV file containing the layers data.
+- `--layerscodecolumn` (optional): the column number of the lithologies codes in the CSV file passed in `--layersfilename`. Column counting starts from 1. If this argument is omitted, the first column will be used.
+- `--layerstopcolumn` (optional): the column number of the tops of the layers in the CSV file passed in `--layersfilename`. Column counting starts from 1. If this argument is omitted, the second column will be used.
+- `--layersbottomcolumn` (optional): the column number of the bottoms of the layers in the CSV file passed in `--layersfilename`. Column counting starts from 1. If this argument is omitted, the third column will be used.
+- `--layerskiplines` (optional): number of lines that will be skipped when reading the CSV file passed in `--layersfilename` (i.e. the header, or columnt titles). If this argument is omitted, a single line will be skipped.
+- `--csvfilename` (or `-c`): the file name of a CSV file containing the colors and codes of lithologies.
+- `--csvcodecolumn` (optional): the column number of the lithologies codes in the CSV file passed in `--csvfilename`. Column counting starts from 1. If this argument is omitted, the first column will be used.
+- `--csvcolorcolumn` (optional): the column number of the lithologies colors in the CSV file passed in `--csvfilename`. Column counting starts from 1. If this argument is omitted, the second column will be used.
+- `--csvskiplines` (optional): number of lines that will be skipped when reading the CSV file passed in `--csvfilename` (i.e. the header, or columnt titles). If this argument is omitted, a single line will be skipped.
+- `--csvcolumnseparator` (optional): the column separator used in the CSV file. If this argument is omitted, comma (`,`) will be used as column separator.
+- `--csvcolorformat` (optional): the color format used in the CSV file. For now, can be `html`, `rgb` or `int`. You can find more on this further in this document. If this argument is omitted, html formatting will be assumed.
+- `--nullcolor` (optional): the color to be used when there is a gap between layers. Should use the format specified in the argument above. If this argument is omitted, black will be used.
+- `--topdepth` (or `-t`, optional): the depth associated with the top of the image. If this argument and `--bottomdepth` are both omitted, the pixel positions in the image will be used as the depth.
+- `--bottomdepth` (or `-b`, optional): the depth associated with the bottom of the image. If this argument and `--topdepth` are both omitted, the pixel positions in the image will be used as the depth.
+- `--topshift` (optional): a value to be added to the tops of the layers found by the program. If this argument is omitted, no shift will be performed.
+- `--bottomshift` (optional): a value to be added to the bottoms of the layers found by the program. If this argument is omitted, no shift will be performed.
+- `--width`: width of the output image in pixels.
+- `--height`: height of the output image in pixels.
+- `--outputfilename` (or `-o`): name of the output image file.
+
+## `layerstolas.py` command line arguments
+
+- `--layersfilename` (or `-i`): file name of the CSV file containing the layers data.
+- `--layerscodecolumn` (optional): column number of the lithologies codes in the CSV file passed in `--layersfilename`. Column counting starts from 1. If this argument is omitted, the first column will be used.
+- `--layerstopcolumn` (optional): column number of the tops of the layers in the CSV file passed in `--layersfilename`. Column counting starts from 1. If this argument is omitted, the second column will be used.
+- `--layersbottomcolumn` (optional): column number of the bottoms of the layers in the CSV file passed in `--layersfilename`. Column counting starts from 1. If this argument is omitted, the third column will be used.
+- `--layerskiplines` (optional): number of lines that will be skipped when reading the CSV file passed in `--layersfilename` (i.e. the header, or columnt titles). If this argument is omitted, a single line will be skipped.
+- `--layersemptycell` (optional): value that should be interpreted as an empty cell when reading the CSV file passed in `--layersfilename`. Only the top of the first layer or the bottom of the last layer can be empty. If this argument is omitted, only textless cells will be considered empty.
+- `--csvfilename` (or `-c`, optional): file name of a CSV file containing the colors and codes of lithologies. In this program this file should only be used to "translate" the code value in the layers CSV file. For example, if the text code was used in the layers CSV it should be translated to a numeric value.
+- `--csvcode1column` (optional): column number of the lithologies codes present in the CSV file passed in `--layersfilename`. Column counting starts from 1. If this argument is omitted, the first column will be used.
+- `--csvcode2column` (optional): column number of the lithologies colors to which those in the CSV file passed in `--layersfilename` will be translated. Column counting starts from 1. If this argument is omitted, the second column will be used.
+- `--csvskiplines` (optional): number of lines that will be skipped when reading the CSV file passed in `--csvfilename` (i.e. the header, or columnt titles). If this argument is omitted, a single line will be skipped.
+- `--csvcolumnseparator` (optional): the column separator used in the CSV file. If this argument is omitted, comma (`,`) will be used as column separator.
+- `--topshift` (optional): a value to be added to the tops of the layers found by the program. If this argument is omitted, no shift will be performed.
+- `--bottomshift` (optional): a value to be added to the bottoms of the layers found by the program. If this argument is omitted, no shift will be performed.
+- `--wellfilename`: file name of the input LAS file.
+- `--depthmnem` (optional): the mnemoic of the depth "curve" in the input LAS file. If this argument is omitted, the first curve will be used as the depth (as specified in the LAS 2.0 standard).
+- `--mnem` (optional): mnemoic of the curve that will be created. If this argument is omitted, the name found on the appropriate CSV file column header will be used.
+- `--unit` (optional): unit of the curve that will be created. If this argument is omitted, the new curve will have no unit.
+- `--nullcode` (optional): code number that will be used where there is no value for the new curve. If this argument is omitted, -1 will be used.
+- `--interpolate` (optional): this argument don't have an associated value. If it is present, gaps between layers will be interpolated.
+- `--outputfilename` (or `-o`): name of the output LAS file.
