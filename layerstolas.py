@@ -12,12 +12,12 @@ parser.add_argument('--layerscodecolumn', type=int, default=1)
 parser.add_argument('--layerstopcolumn', type=int, default=2)
 parser.add_argument('--layersbottomcolumn', type=int, default=3)
 parser.add_argument('--layersskiplines', type=int, default=1)
+parser.add_argument('--layersemptycell', default='')
 parser.add_argument('--csvfilename', '-c', default='')
 parser.add_argument('--csvcode1column', type=int, default=1)
 parser.add_argument('--csvcode2column', type=int, default=2)
 parser.add_argument('--csvskiplines', type=int, default=1)
 parser.add_argument('--csvcolumnseparator', default=',')
-parser.add_argument('--csvemptycell', default='')
 parser.add_argument('--topshift', type=float, default=0.0)
 parser.add_argument('--bottomshift', type=float, default=0.0)
 parser.add_argument('--wellfilename', '-w')
@@ -35,9 +35,9 @@ layercodes = layersdata[args.layerscodecolumn-1]
 tops = layersdata[args.layerstopcolumn-1]
 bottoms = layersdata[args.layersbottomcolumn-1]
 
-if tops[0] == args.csvemptycell:
+if tops[0] == args.layersemptycell:
     tops[0] = np.nan
-if bottoms[-1] == args.csvemptycell:
+if bottoms[-1] == args.layersemptycell:
     bottoms[-1] = np.nan
 
 tops = np.array(map(float, tops))
