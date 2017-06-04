@@ -2,6 +2,14 @@
 
 Converts an image file to a lithology log.
 
+It is common (at least in Brazilian universities) to have the lithologic log for a well in an image file (as part of a report in a PDF format, for example) and the wireline logs in a LAS file. Transform this data into a useful format is often a laborious task. The goal of this repository is to provide an automatic solution for this issue. Only three files are necessary:
+
+- the image file (preferably in high resolution and with no compression, for preserving the colors);
+
+- a CSV file that "translates" the colors into lithologies codes;
+
+- the LAS file (actually this is optional, as will be seen further).
+
 The repository has 3 mains programs:
 
 1. `imagetolayers.py`: converts an image file (*.png, for example), to a CSV file with the layers found in the image.
@@ -10,9 +18,31 @@ The repository has 3 mains programs:
 
 3. `layerstolas.py`: add the layers from a CSV file as a new curve in a LAS file.
 
-The folder `sample` contains a sample synthetic dataset to test the program, as well the expected outputs of the 3 programs.
+The folder `sample` contains a synthetic dataset to test the program, as well the expected outputs of the 3 programs. Below are the sample input image and CSV files:
 
-All programs provide a command line interface that is described below.
+- Sample image (usually it will be way taller):
+
+    ![Sample input image](https://github.com/rcg-uff/ImageToLithology/blob/master/sample/figure.png)
+
+- Sample CSV (in Portuguese):
+
+    ```csv
+    LITOLOGIA,ABREVIACAO,COR,CODIGO
+    ANIDRITA,AND,#dd1dff,82
+    ARDOSIA,ARS,#00dd00,77
+    AREIA,ARE,#ffff3f,48
+    ARENITO,ARN,#ffff3f,49
+    ARENITO ARGILOSO,ARL,#7eff00,25
+    ARENITO CARBONATICO,ARC,#3fbeff,26
+    ARENITO CONGLOMERATICO,ARO,#ffbe1d,27
+    ARENITO FOSFATICO,ARF,#ffff3f,28
+    ARENITO TOBACEO,ART,#dddddd,29
+    ARGILA,ARG,#7eff00,55
+    ARGILITO,AGT,#7eff00,56
+    ...
+    ```
+
+All programs provide a command line interface that are described below.
 
 # Usage
 
