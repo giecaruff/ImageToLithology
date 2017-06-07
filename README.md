@@ -10,13 +10,30 @@ It is common (at least in Brazilian universities) to have the lithologic log for
 
 - the LAS file (actually this is optional, as will be seen further).
 
-The repository has 3 mains programs:
+The repository has 3 main programs:
 
 1. `imagetolayers.py`: converts an image file (*.png, for example), to a CSV file with the layers found in the image.
 
 2. `layerstoimage.py`: do the inverse of the previous program. It's used for quality control purposes.
 
 3. `layerstolas.py`: add the layers from a CSV file as a new curve in a LAS file.
+
+## Dependencies
+
+This package has only three dependencies:
+
+- `numpy`: arrays manipulation;
+- `scipy`: data interpolation;
+- `PIL`: image input/output.
+
+The program was developed and tested using:
+
+- `Python 2.7.12 64 bit on win32`
+- `numpy 1.11.2`
+- `scipy 0.18.1`
+- `PIL 4.1.0`
+
+## Sample data
 
 The folder `sample` contains a synthetic dataset to test the program, as well the expected outputs of the 3 programs. Below are the sample input image and CSV files:
 
@@ -102,10 +119,100 @@ All programs provide a command line interface that are described below.
 - `--csvcolumnseparator` (optional): column separator used in the CSV file. If this argument is omitted, comma (`,`) will be used as column separator.
 - `--topshift` (optional): a value to be added to the tops of the layers found by the program. If this argument is omitted, no shift will be performed.
 - `--bottomshift` (optional): a value to be added to the bottoms of the layers found by the program. If this argument is omitted, no shift will be performed.
-- `--wellfilename`: file name of the input LAS file.
+- `--wellfilename` (or `-w`): file name of the input LAS file.
 - `--depthmnem` (optional): mnemoic of the depth "curve" in the input LAS file. If this argument is omitted, the first curve will be used as the depth (as specified in the LAS 2.0 standard).
 - `--mnem` (optional): mnemoic of the curve that will be created. If this argument is omitted, the name found on the appropriate CSV file column header will be used.
 - `--unit` (optional): unit of the curve that will be created. If this argument is omitted, the new curve will have no unit.
 - `--nullcode` (optional): code number that will be used where there is no value for the new curve. If this argument is omitted, -1 will be used.
 - `--interpolate` (optional): this argument don't have an associated value. If it is present, gaps between layers will be interpolated.
 - `--outputfilename` (or `-o`): name of the output LAS file.
+
+## Example
+
+This example uses the data in the folder `sample`. To generate a CSV file containing the layers from the image `figure.png` the following command should be used:
+
+```
+python imagetolayers.py -i sample\figure.png -c sample\colors.csv --csvcodecolumn 4 --csvcolorcolumn 3 -t 585.125 -b 635.0 -o sample\output.csv
+```
+
+The arguments `--csvcodecolumn 4` and `--csvcolorcolumn 3` were used because the lithologies codes and colors are, respectively in the the fourth and third columns in the CSV file. The top and bottom depths (`-t 585.125 -b 635.0`) were obtained from the LAS file. Note that the used image may be relative only to a part of the well, and not necessarily the whole well. The default values for the other arguments were used. The output file is shown below:
+
+```csv
+CODE,TOP,BOTTOM
+21,585.125,596.25
+57,597.0,601.25
+48,602.0,614.75
+57,615.5,618.5
+48,619.25,629.875
+66,630.625,635.0
+```
+
+For quality control of the generated file, it is advised to run `layerstoimage.py` in order to produce a new image for comparison with the original one. For doing so, this command was used:
+
+```
+python sample\layerstoimage.py -i sample\output.csv -c colors.csv --csvcodecolumn 4 --csvcolorcolumn 3 -t 585.125 -b 635.0 --width 400 --height 400 -o sample\output.png
+```
+
+The output image shape (`--width 400 --height 400`) was choosen to match the original image. The image produced in this step is shown below:
+
+![Sample output image](https://github.com/rcg-uff/ImageToLithology/blob/master/sample/output.png)
+
+Note that it perfectly matches the original image (that was shown in the beggining of this document). It may not always be the case.
+
+The final step is to add the layers obtained from the image as a curve in a LAS file. In this example it is done using this command:
+
+```
+python sample\layerstolas.py -i sample\output.csv -w sample\welllog.las -o sample\output.las
+```
+
+An excerpt of the output LAS file is shwon below:
+
+```
+...
+~C
+ DEPT.M                         :                                             
+ AAA .BBB                       :                                             
+ CCC .DDD                       :                                             
+ CODE.                          : Created from an image using ImageToLithology
+~A
+       635     0.0045     1.0144         66
+   634.875     0.0074     1.0578         66
+    634.75      0.063     1.0438         66
+   634.625     0.0441     1.0293         66
+     634.5     0.1379     0.9951         66
+   634.375     0.0751      1.033         66
+    634.25     0.0451     0.9921         66
+...
+```
+
+Note that since the new curve mnemoic was not specified, it was used the column title of the layers' CSV file. In its turn, the column titles were also not specified when creating the layers' CSV file, and the default titles were used.
+
+# Known issues/limitations
+
+Images where the colors in the same lithology are not homogeneous can perform badly. It may occur in compressed images where the color values are not preserved. Can also happens when the image comes from a photography or scanner (though this kinds of images have not been tested).
+
+The `imagetolayers.py` program cannot differentitate between lithologies with the same color but different hatch patterns. Actually the program can detect hatch patterns at all.
+
+In cases where there is more than one lithology with the same color in the CSV value the first occurrance will be used.
+
+# Other topics
+
+## Color format
+
+Right now the programs support only three color formats: `html`, `rgb` and `int`. The `html` is the default format used in html files and many other programs. It consists of a hash symbol (`#`) followed by 6 hexadecimal characters. The first two decimal caracters represent the red value, the next two, the green value, and the last two the blue value. The `rgb` format is composed of 3 integer numbers between 0 and 255 separated by spaces. The numbers are the red, green and blue values, respectively. Lastly, the `int` format is an integer number. The number value for a color is the equivalent to convert a `html` value of this color (minus the `#`) from hexadecimal to decimal. Below are some colors examples in the three formats:
+
+| Color | `html`  | `rgb`       | `int`    |
+| :---- | :------ | :---------- | :------- |
+| White | #ffffff | 255 255 255 | 16777215 |
+| Black | #000000 | 0 0 0       | 0        | 
+| Red   | #ff0000 | 255 0 0     | 16711680 |
+| Green | #00ff00 | 0 255 0     | 65280    |
+| Blue  | #0000ff | 0 0 255     | 255      |
+
+## Color distance and max distance
+
+Due to many reasons, the colors in the image file might not perfectly match those specified in the CSV file. When there is no perfect match, the color in the CSV file that is closest to the color in the image is chosen.
+
+There are four different metrics for calculating the distance between two colors: `human`, `l1`, `l2` and `max`. For all metrics the colors are considered as a 3 dimensional vector, with the dimensions being the red, green and blue values. The `human` distance metric is a mathematical approximation of how the human eye perceives colors. The `l1` metric (as the name implies) calculates the l1-norm distance between the colors (also known as Manhattan distance). Similarly, the `l2` metric calculates the l2-norm distance (also known as Euclidian distance). The `max` distance uses the maximum absolute value in the difference vector between the colors. All metrics are normalized in such a way that the distance between white (`#ffffff` in `html` format) and black (`#000000`) is equal to 1.0.
+
+A maximum allowed distance can be specified using the `--maxdistance` argument (which defaults to 0.02). When the color in the image exceeds the maximum distance for all available colors in the CSV file, it is attributed a null color value for this color. For avoiding errors, the maximum allowed distance should be less than half of the minimum distance between colors in the CSV file (this does not hold for the `human` metric, since the triangle inequality does not hold true for this metric).
