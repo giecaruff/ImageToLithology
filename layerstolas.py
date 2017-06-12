@@ -7,7 +7,7 @@ import LAS
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument('--layersfilename', '-l')
+parser.add_argument('--layersfilename', '-i')
 parser.add_argument('--layerscodecolumn', type=int, default=1)
 parser.add_argument('--layerstopcolumn', type=int, default=2)
 parser.add_argument('--layersbottomcolumn', type=int, default=3)
