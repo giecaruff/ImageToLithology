@@ -20,18 +20,25 @@ The repository has 3 main programs:
 
 ## Dependencies
 
-This package has only three dependencies:
+This program only has three dependencies:
 
 - `numpy`: arrays manipulation;
 - `scipy`: data interpolation;
-- `PIL`: image input/output.
+- `imageio`: image input/output.
 
-The program was developed and tested using:
+It was developed and tested using:
 
-- `Python 2.7.12 64 bit on win32`
-- `numpy 1.11.2`
-- `scipy 0.18.1`
-- `PIL 4.1.0`
+- `Python 3.7.3 64 bit on win32`
+- `numpy 1.17.1`
+- `scipy 1.3.1`
+- `PIL 2.5.0`
+
+If you wish, you can use [`pipenv`](https://github.com/pypa/pipenv) to install all dependencies using the following command:
+
+```
+cd path\to\ImageToLighology
+pipenv install
+```
 
 ## Sample data
 
