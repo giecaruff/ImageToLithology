@@ -150,7 +150,7 @@ CODE,TOP,BOTTOM
 For quality control of the generated file, it is advised to run `layerstoimage.py` in order to produce a new image for comparison with the original one. For doing so, this command was used:
 
 ```
-python sample\layerstoimage.py -i sample\output.csv -c colors.csv --csvcodecolumn 4 --csvcolorcolumn 3 -t 585.125 -b 635.0 --width 400 --height 400 -o sample\output.png
+python layerstoimage.py -i sample\output.csv -c sample\colors.csv --csvcodecolumn 4 --csvcolorcolumn 3 -t 585.125 -b 635.0 --width 400 --height 400 -o sample\output.png
 ```
 
 The output image shape (`--width 400 --height 400`) was choosen to match the original image. The image produced in this step is shown below:
@@ -162,7 +162,7 @@ Note that it perfectly matches the original image (that was shown in the beggini
 The final step is to add the layers obtained from the image as a curve in a LAS file. In this example it is done using this command:
 
 ```
-python sample\layerstolas.py -i sample\output.csv -w sample\welllog.las -o sample\output.las
+python layerstolas.py -i sample\output.csv -w sample\welllog.las -o sample\output.las
 ```
 
 An excerpt of the output LAS file is shwon below:
