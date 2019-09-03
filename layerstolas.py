@@ -3,7 +3,7 @@ import argparse
 
 import Utils
 import readcsv
-import LAS
+import las2
 
 parser = argparse.ArgumentParser()
 
@@ -40,8 +40,8 @@ if tops[0] == args.layersemptycell:
 if bottoms[-1] == args.layersemptycell:
     bottoms[-1] = np.nan
 
-tops = np.array(map(float, tops))
-bottoms = np.array(map(float, bottoms))
+tops = np.array(list(map(float, tops)))
+bottoms = np.array(list(map(float, bottoms)))
 
 tops += args.topshift
 bottoms += args.bottomshift
@@ -59,16 +59,21 @@ if args.csvfilename:
     for i in range(len(layercodes)):
         layercodes[i] = codes1tocodes2dict[layercodes[i]]
 
-layercodes = np.array(map(int, layercodes), dtype=int)
+layercodes = np.array(list(map(int, layercodes)), dtype=int)
 
-inputlas = LAS.open(args.wellfilename, 'r')
-inputlas.read()
+inputlas = las2.read(args.wellfilename)
 
 if not args.depthmnem:
-    depth = inputlas.data[0]
+    depth = inputlas['data'][0]
 else:
-    depthindex = inputlas.curvesnames.index(args.depthmnem)
-    depth = inputlas.data[depthindex],
+    depth = None
+    for i, curve in enumerate(inputlas['curve']):
+        if curve['mnemonic'] == args.depthmnem:
+            depth = inputlas['data'][i]
+            break
+    if depth is None:
+        print("Depth mnemonic '{}' not found.".format(args.depthmnem))
+        quit()
 
 if tops[0] is np.nan:
     tops[0] = np.nanmin(depth)
@@ -85,12 +90,14 @@ if not args.mnem:
 else:
     mnem = args.mnem
 
-outputlas = LAS.open(args.outputfilename, 'w')
-outputlas.header = LAS.LASWriter.correctcurvesection(inputlas.header, inputlas.curvesnames + [mnem], inputlas.curvesunits + [args.unit])
-outputlas.header['C'][mnem]["DESC"] = "Created from an image using ImageToLithology"
-outputlas.headerlayout = LAS.LASWriter.getprettyheaderlayout(outputlas.header)
-outputlas.headersectionnames = inputlas.headersectionnames
+inputlas['curve'].append(
+    {
+        "mnemonic": mnem,
+        "unit": args.unit,
+        "value": "",
+        "description": "Created from an image using ImageToLithology"
+    }
+)
+inputlas['data'] = np.vstack((inputlas['data'], log))
 
-outputlas.data = np.append(inputlas.data, log.reshape((1, -1)), axis=0)
-
-outputlas.write()
+las2.write(args.outputfilename, inputlas)

@@ -1,5 +1,5 @@
 import numpy as np
-from scipy import ndimage
+import imageio
 import argparse
 
 import Utils
@@ -28,20 +28,20 @@ parser.add_argument('--outputfilename', '-o')
 
 args = parser.parse_args()
 
-image_rgb = ndimage.imread(args.imagefilename, mode='RGB')
+image_rgb = imageio.imread(args.imagefilename, pilmode='RGB')
 
 csvheader, csvdata = readcsv.readcsv(args.csvfilename, delimiter=args.csvcolumnseparator, headerlines=args.csvskiplines, onlystr=True)
 codes = csvdata[args.csvcodecolumn-1]
 
 if args.csvcolorformat == 'html':
-    colors = np.array(map(Utils.html2int, csvdata[args.csvcolorcolumn-1]), dtype=int)
+    colors = np.array(list(map(Utils.html2int, csvdata[args.csvcolorcolumn-1])), dtype=int)
 elif args.csvcolorformat == 'rgb':
     # TODO: test and be aware of variations (int between 0 and 255 and float between 0 and 1, for instance)
     colors = np.array([Utils.rgb2int(*map(int, a.split())) for a in csvdata[[args.csvcolorcolumn-1]]], dtype=int)
 elif args.csvcolorformat == 'int':
     colors = np.array(csvdata[[args.csvcolorcolumn-1]], dtype=int)
 else:
-    print "Unable to handle color format: {}.".format(colorformat)
+    print("Unable to handle color format: {}.".format(args.csvcolorformat))
     quit()
 
 colorstocodesdict = {}

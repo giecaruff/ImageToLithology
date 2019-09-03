@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
+import io
 
 def readcsv(file, delimiter=',', decimal='.', headerlines=1, strip=True, onlystr=False, nullstr=None, nullfloat=None):
-    closefile = False
-    if isinstance(file, basestring):
+    if isinstance(file, io.IOBase):
+        file.seek(0)
+        closefile = False
+    else:
         file = open(file, 'r')
         closefile = True
     

@@ -43,8 +43,8 @@ if tops[0] == args.csvemptycell:
 if bottoms[-1] == args.csvemptycell:
     bottoms[-1] = np.nan
 
-tops = np.array(map(float, tops))
-bottoms = np.array(map(float, bottoms))
+tops = np.array(list(map(float, tops)))
+bottoms = np.array(list(map(float, bottoms)))
 
 if args.topdepth is not np.nan and args.bottomdepth is not np.nan:
     n = args.height
@@ -55,17 +55,17 @@ csvheader, csvdata = readcsv.readcsv(args.csvfilename, delimiter=args.csvcolumns
 codes = csvdata[args.csvcodecolumn-1]
 
 if args.csvcolorformat == 'html':
-    colors = np.array(map(Utils.html2int, csvdata[args.csvcolorcolumn-1]), dtype=int)
+    colors = np.array(list(map(Utils.html2int, csvdata[args.csvcolorcolumn-1])), dtype=int)
     nullcolor = Utils.html2int(args.nullcolor)
 elif args.csvcolorformat == 'rgb':
     # TODO: test and be aware of variations (int between 0 and 255 and float between 0 and 1, for instance)
     colors = np.array([Utils.rgb2int(*map(int, a.split())) for a in csvdata[[args.csvcolorcolumn-1]]], dtype=int)
     nullcolor = Utils.rgb2int(*map(int, args.nullcolor.split()))
 elif args.csvcolorformat == 'int':
-    colors = np.array(map(int, csvdata[[args.csvcolorcolumn-1]]), dtype=int)
+    colors = np.array(list(map(int, csvdata[[args.csvcolorcolumn-1]])), dtype=int)
     nullcolor = int(args.nullcolor)
 else:
-    print "Unable to handle color format: {}.".format(colorformat)
+    print("Unable to handle color format: {}.".format(args.csvcolorformat))
     quit()
 
 codestocolorsdict = {}
