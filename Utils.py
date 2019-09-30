@@ -182,8 +182,8 @@ def interpolate(new_x, y, tops, bottoms, nullvalue=_NULL_COLOR, fillgaps=False, 
         x_ = np.vstack((tops, bottoms)).T.flatten()
     else:
         epsilon = 1.0E-6
-        y_ = np.vstack((np.zeros(len(y))+nullvalue, y, y, np.zeros(len(y))+nullvalue)).T.flatten()
-        x_ = np.vstack((tops-epsilon, tops, bottoms, bottoms+epsilon)).T.flatten()
+        y_ = np.c_[np.full(len(y), nullvalue), y, y, np.full(len(y), nullvalue)].flatten()
+        x_ = np.c_[tops-epsilon, tops, bottoms, bottoms+epsilon].flatten()
     
     if extrapolate:
         fill_value = 'extrapolate'
@@ -192,3 +192,53 @@ def interpolate(new_x, y, tops, bottoms, nullvalue=_NULL_COLOR, fillgaps=False, 
     
     f = interp1d(x_, y_, kind='nearest', bounds_error=False, fill_value=fill_value)
     return f(new_x)
+
+def interpolate2(new_x, y, tops, bottoms, nullvalue=_NULL_COLOR, fillgaps=False, maxgap=1):
+    itop = 0
+    ibottom = 0
+
+    new_y = np.full(new_x.shape, nullvalue)
+    for y_, top, bottom in zip(y, tops, bottoms):
+        while new_x[itop] <= top:
+            itop += 1
+        while new_x[ibottom] <= bottom:
+            ibottom += 1
+        ibottom -= 1
+        new_y[itop:ibottom+1] = y_
+
+    if fillgaps:
+        itop = 0
+        ibottom = 0
+        for i, (top, bottom) in enumerate(zip(bottoms[:-1], tops[1:])):
+            while new_x[itop] < top:
+                itop += 1
+            while new_x[ibottom] < bottom:
+                ibottom += 1
+            ibottom -= 1
+            if ibottom - itop > maxgap:
+                continue
+            vals = y[i:i+2]
+            dists = np.empty((ibottom - itop + 1, 2))
+            dists[:, 0] = new_x[itop:ibottom+1] - new_x[itop]
+            dists[:, 1] = new_x[itop:ibottom+1] - new_x[ibottom]
+            new_y[itop:ibottom+1] = vals[np.argmin(dists, axis=1)]
+
+    return new_y
+
+
+def plot_layers(ax, tops, bottoms, colors):
+    x0, x1 = ax.get_xlim()
+    for t, b, c in zip(tops, bottoms, colors):
+        ax.fill_betweenx([t, b], x0, x1, color=c, alpha=0.2)
+
+if __name__ == '__main__':
+    import matplotlib.pyplot as plt
+    tops = [10, 20, 40]
+    bottoms = [20, 30, 50]
+    codes = [1, 2, 1]
+    colors = ['r', 'g', 'r']
+    x = np.linspace(0, 60)
+    y = interpolate2(x, codes, tops, bottoms, 0)
+    plt.plot(y, x)
+    plot_layers(plt.gca(), tops, bottoms, colors)
+    plt.show()
