@@ -31,7 +31,7 @@ It was developed and tested using:
 - `Python 3.7.3 64 bit on win32`
 - `numpy 1.17.1`
 - `scipy 1.3.1`
-- `PIL 2.5.0`
+- `imageio 2.5.0`
 
 If you wish, you can use [`pipenv`](https://github.com/pypa/pipenv) to install all dependencies using the following command:
 

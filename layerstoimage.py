@@ -1,5 +1,5 @@
 import numpy as np
-from PIL import Image
+import imageio
 import argparse
 
 import Utils
@@ -87,5 +87,4 @@ if bottoms[-1] is np.nan:
 image_1d = Utils.interpolate(np.arange(args.height), layercolors, tops, bottoms, nullvalue=nullcolor)
 image_int = Utils.fattenimage(image_1d, args.width)
 image_rgb = Utils.imageint2rgb(image_int).astype(__RGB_INT_TYPE)
-img = Image.fromarray(image_rgb, 'RGB')
-img.save(args.outputfilename)
+imageio.imsave(args.outputfilename, image_rgb)
