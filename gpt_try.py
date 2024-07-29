@@ -5,13 +5,14 @@ from collections import Counter
 import math
 import numpy as np
 
-##############################################################
+############################################################################################
 top_depth = 2075.0
 bottom_depth = 2114.2
 step = False
 path_color = "C:\\Users\\mario\\Desktop\\lito_conversor\\colors.csv"
 image_path = "C:\\Users\\mario\\Desktop\\lito_conversor\\3-BRSA-1195-RJS_PC_possal.png"
-##############################################################
+output_path = "C:\\Users\\mario\\Desktop\\3-BRSA-1195-RJS_possal_PC_lito.csv"
+############################################################################################
 
 def hex_to_rgb(hex_color):
     hex_color = hex_color.lstrip('#')
@@ -87,7 +88,7 @@ depths = [top_depth + i * interval for i in range(len(codes_for_rows))]
 
 if step:
     print("Step")
-    new_depth = np.arrange(top_depth, bottom_depth, step)
+    new_depth = np.arange(top_depth, bottom_depth, step)
     new_code = np.interp(new_depth, depths, codes_for_rows)
 
     df = pd.DataFrame({
@@ -102,4 +103,4 @@ else:
     'Code': codes_for_rows
     })
 
-df.to_csv("C:\\Users\\mario\\Desktop\\3-BRSA-1195-RJS_possal_PC_lito.csv", index=False)
+df.to_csv(output_path, index=False)
