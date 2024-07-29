@@ -3,6 +3,15 @@ from PIL import Image
 import pandas as pd
 from collections import Counter
 import math
+import numpy as np
+
+##############################################################
+top_depth = 2075.0
+bottom_depth = 2114.2
+step = False
+path_color = "C:\\Users\\mario\\Desktop\\lito_conversor\\colors.csv"
+image_path = "C:\\Users\\mario\\Desktop\\lito_conversor\\3-BRSA-1195-RJS_PC_possal.png"
+##############################################################
 
 def hex_to_rgb(hex_color):
     hex_color = hex_color.lstrip('#')
@@ -52,10 +61,10 @@ def most_common_color_in_row(image_path):
                 colors_per_row.append(None)
         return colors_per_row
 
-color_data = pd.read_csv('D:\\GitHub\\ImageToLithology\\sample\\colors.csv')
+color_data = pd.read_csv(path_color)
 
 # Usage:
-image_path = "C:\\Users\\mario\\Desktop\\3-BRSA-1184-RJS_PC_lito.png"
+
 dominant_row_colors = most_common_color_in_row(image_path)
 
 # Initialize the last valid color
@@ -73,14 +82,24 @@ for color in dominant_row_colors:
 
 # Print the results
 
-top_depth = 2048.0
-bottom_depth = 5900.0
-
 interval = (bottom_depth - top_depth) / len(codes_for_rows)
 depths = [top_depth + i * interval for i in range(len(codes_for_rows))]
 
-df = pd.DataFrame({
+if step:
+    print("Step")
+    new_depth = np.arrange(top_depth, bottom_depth, step)
+    new_code = np.interp(new_depth, depths, codes_for_rows)
+
+    df = pd.DataFrame({
+    'Depth': new_depth,
+    'Code': new_code
+    }) 
+
+else:
+    print("No Step")
+    df = pd.DataFrame({
     'Depth': depths,
     'Code': codes_for_rows
-})
-df.to_csv("C:\\Users\\mario\\Desktop\\3-BRSA-1184-RJS_PC_lito.csv", index=False)
+    })
+
+df.to_csv("C:\\Users\\mario\\Desktop\\3-BRSA-1195-RJS_possal_PC_lito.csv", index=False)
